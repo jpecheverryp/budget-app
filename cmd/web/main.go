@@ -8,37 +8,45 @@ import (
 )
 
 type config struct {
-    port int
+	port int
 }
 
-func getIndex (w http.ResponseWriter, r *http.Request) {
-    w.Write([]byte("This will be a page to show what the app does"))
+type application struct {
+	config config
 }
 
-func getDashboard (w http.ResponseWriter, r *http.Request) {
-    w.Write([]byte("This page will show the app dashboard"))
+func (app *application) getIndex(w http.ResponseWriter, r *http.Request) {
+	w.Write([]byte("This will be a page to show what the app does"))
 }
 
-func getLogin (w http.ResponseWriter, r *http.Request) {
-    w.Write([]byte("This page will show login page"))
+func (app *application) getDashboard(w http.ResponseWriter, r *http.Request) {
+	w.Write([]byte("This page will show the app dashboard"))
 }
 
-func getRegister (w http.ResponseWriter, r *http.Request) {
-    w.Write([]byte("This page will show register page"))
+func (app *application) getLogin(w http.ResponseWriter, r *http.Request) {
+	w.Write([]byte("This page will show login page"))
+}
+
+func (app *application) getRegister(w http.ResponseWriter, r *http.Request) {
+	w.Write([]byte("This page will show register page"))
 }
 
 func main() {
-    var cfg config
-    flag.IntVar(&cfg.port, "port", 8080, "App Network Port")
-    flag.Parse()
+	var cfg config
+	flag.IntVar(&cfg.port, "port", 8080, "App Network Port")
+	flag.Parse()
 
-    mux := http.NewServeMux()
+	app := &application{
+		config: cfg,
+	}
 
-    mux.HandleFunc("/", getIndex)
-    mux.HandleFunc("/dashboard", getDashboard)
-    mux.HandleFunc("/login", getLogin)
-    mux.HandleFunc("/register", getRegister)
+	mux := http.NewServeMux()
 
-    log.Print("running server in port :", cfg.port)
-    log.Fatal(http.ListenAndServe(fmt.Sprintf(":%d", cfg.port), mux))
+	mux.HandleFunc("/", app.getIndex)
+	mux.HandleFunc("/dashboard", app.getDashboard)
+	mux.HandleFunc("/login", app.getLogin)
+	mux.HandleFunc("/register", app.getRegister)
+
+	log.Print("running server in port :", app.config.port)
+	log.Fatal(http.ListenAndServe(fmt.Sprintf(":%d", app.config.port), mux))
 }
