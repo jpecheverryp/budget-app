@@ -1,10 +1,13 @@
 package main
 
 import (
+	"context"
 	"flag"
 	"fmt"
 	"log"
 	"net/http"
+
+	view "github.com/jpecheverryp/budget-app/view/layout"
 )
 
 type config struct {
@@ -16,7 +19,7 @@ type application struct {
 }
 
 func (app *application) getIndex(w http.ResponseWriter, r *http.Request) {
-	w.Write([]byte("This will be a page to show what the app does"))
+    view.Base().Render(context.Background(), w)
 }
 
 func (app *application) getDashboard(w http.ResponseWriter, r *http.Request) {
