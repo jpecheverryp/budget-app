@@ -7,7 +7,10 @@ import (
 	"log"
 	"net/http"
 
-	view "github.com/jpecheverryp/budget-app/view/layout"
+	"github.com/jpecheverryp/budget-app/view/dashboard"
+	"github.com/jpecheverryp/budget-app/view/home"
+	"github.com/jpecheverryp/budget-app/view/login"
+	"github.com/jpecheverryp/budget-app/view/register"
 )
 
 type config struct {
@@ -19,19 +22,19 @@ type application struct {
 }
 
 func (app *application) getIndex(w http.ResponseWriter, r *http.Request) {
-    view.Base().Render(context.Background(), w)
+	home.Show().Render(context.Background(), w)
 }
 
 func (app *application) getDashboard(w http.ResponseWriter, r *http.Request) {
-	w.Write([]byte("This page will show the app dashboard"))
+	dashboard.Show().Render(context.Background(), w)
 }
 
 func (app *application) getLogin(w http.ResponseWriter, r *http.Request) {
-	w.Write([]byte("This page will show login page"))
+	login.Show().Render(context.Background(), w)
 }
 
 func (app *application) getRegister(w http.ResponseWriter, r *http.Request) {
-	w.Write([]byte("This page will show register page"))
+	register.Show().Render(context.Background(), w)
 }
 
 func main() {
