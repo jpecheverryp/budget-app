@@ -24,17 +24,30 @@ templ Main() {
 		<header>
 			@component.Nav()
 		</header>
-		{ children... }
+		<main>
+			{ children... }
+		</main>
+		<footer>
+			<p>Created by <a href="https://jpech.dev" target="_blank">Juan P Echeverry</a> - <a href="https://github.com/jpecheverryp/budget-app" target="_blank">Open Source</a></p>
+		</footer>
 	}
 }
 
 templ Dashboard(accounts []service.Account) {
 	@Base() {
+		<header>
+			<nav>
+				<ul>
+					<li><h1>Dashboard</h1></li>
+				</ul>
+			</nav>
+		</header>
 		<div>
-			<h1>Dashboard</h1>
 			<section class="flex">
 				@component.Sidebar(accounts)
-				{ children... }
+				<main>
+					{ children... }
+				</main>
 			</section>
 		</div>
 	}

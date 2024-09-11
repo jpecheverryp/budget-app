@@ -46,7 +46,7 @@ func ShowNewAccount(accounts []service.Account) templ.Component {
 				}()
 			}
 			ctx = templ.InitializeContext(ctx)
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<section><h2>New Account</h2><form hx-post=\"/dashboard/accounts\" hx-push-url=\"false\" hx-target=\"body\"><label for=\"new-account\">Account Name:</label> <input id=\"new-account\" type=\"text\" name=\"new-account\"> <button type=\"submit\">Add</button></form></section>")
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<main><h2>New Account</h2><form hx-post=\"/dashboard/accounts\" hx-push-url=\"false\" hx-target=\"body\"><label for=\"new-account\">Account Name:</label> <input id=\"new-account\" type=\"text\" name=\"new-account\"> <button type=\"submit\">Add</button></form></main>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
