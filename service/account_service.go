@@ -46,3 +46,15 @@ func (s AccountService) GetAll() ([]Account, error) {
 
 	return accounts, nil
 }
+
+func (s AccountService) Create(accountName string) (Account, error) {
+	var a Account
+	stmt := `INSERT INTO account (account_name) VALUES (?) RETURNING rowid, created_at, updated_at`
+	err := s.DB.QueryRow(stmt, accountName).Scan(&a.ID, &a.CreatedAt, &a.UpdatedAt)
+	if err != nil {
+		return Account{}, nil
+	}
+	a.AccountName = accountName
+	return a, nil
+}
+
