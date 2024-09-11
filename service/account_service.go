@@ -16,6 +16,17 @@ type AccountService struct {
 	DB *sql.DB
 }
 
+func (s AccountService) Read(id int) (Account, error) {
+	var a Account
+	stmt := `SELECT account_name, created_at, updated_at FROM account WHERE rowid = ?`
+	err := s.DB.QueryRow(stmt, id).Scan(&a.AccountName, &a.CreatedAt, &a.UpdatedAt)
+	if err != nil {
+		return Account{}, nil
+	}
+	a.ID = id
+	return a, nil
+}
+
 func (s AccountService) GetAll() ([]Account, error) {
 	stmt := `SELECT rowid, account_name, created_at, updated_at FROM account`
 	rows, err := s.DB.Query(stmt)

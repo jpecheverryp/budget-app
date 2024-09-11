@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"net/http"
+	"strconv"
 
 	"github.com/jpecheverryp/budget-app/view/component"
 	"github.com/jpecheverryp/budget-app/view/dashboard"
@@ -60,4 +61,22 @@ func (app *application) postNewAccount(w http.ResponseWriter, r *http.Request) {
 	}
 
 	component.AccountItem(account).Render(context.Background(), w)
+}
+
+func (app *application) getAccountInfo(w http.ResponseWriter, r *http.Request) {
+	id, err := strconv.Atoi(r.PathValue("id"))
+	if err != nil {
+		http.Error(w, http.StatusText(http.StatusBadRequest), http.StatusBadRequest)
+		return
+	}
+
+	account, err := app.accountService.Read(id)
+	if err != nil {
+		http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
+		app.logger.Error(err.Error())
+		return
+	}
+
+	dashboard.ShowAccountInfo(account).Render(context.Background(), w)
+
 }

@@ -15,6 +15,7 @@ func (app *application) routes() *http.ServeMux {
 	mux.HandleFunc("GET /dashboard", app.getDashboard)
 	mux.HandleFunc("GET /dashboard/new-account", app.getNewAccount)
 	mux.HandleFunc("POST /dashboard/accounts", app.postNewAccount)
+	mux.HandleFunc("GET /dashboard/accounts/{id}", app.getAccountInfo)
 
 	mux.HandleFunc("GET /login", app.getLogin)
 	mux.HandleFunc("GET /register", app.getRegister)

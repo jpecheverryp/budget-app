@@ -10,11 +10,11 @@ func getAccount(id int) string {
 }
 
 func getAccountLink(id int) string {
-	return fmt.Sprintf("/dashboard/account/%d", id)
+	return fmt.Sprintf("/dashboard/accounts/%d", id)
 }
 
 templ AccountItem(account service.Account) {
 	<li id={ getAccount(account.ID) }>
-		<a href={ templ.SafeURL(getAccountLink(account.ID)) }>{ account.AccountName }</a>
+		<a hx-get={ getAccountLink(account.ID) } hx-target="main" hx-push-url="true">{ account.AccountName }</a>
 	</li>
 }

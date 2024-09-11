@@ -1,0 +1,9 @@
+package dashboard
+
+import "github.com/jpecheverryp/budget-app/service"
+
+templ ShowAccountInfo(account service.Account) {
+	<h2>{ account.AccountName }</h2>
+	<p>Account Created: { account.CreatedAt.Format("Mon, 02 Jan 2006 15:04:05 MST") }</p>
+	<p>Last Updated: { account.UpdatedAt.Format("Mon, 02 Jan 2006 15:04:05 MST") }</p>
+}
