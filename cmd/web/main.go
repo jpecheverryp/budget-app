@@ -8,6 +8,7 @@ import (
 	"log"
 	"net/http"
 
+	"github.com/jpecheverryp/budget-app/service"
 	"github.com/jpecheverryp/budget-app/view/dashboard"
 	"github.com/jpecheverryp/budget-app/view/home"
 	"github.com/jpecheverryp/budget-app/view/login"
@@ -21,7 +22,8 @@ type config struct {
 }
 
 type application struct {
-	config config
+	config         config
+	accountService *service.AccountService
 }
 
 func (app *application) getIndex(w http.ResponseWriter, r *http.Request) {
@@ -29,7 +31,13 @@ func (app *application) getIndex(w http.ResponseWriter, r *http.Request) {
 }
 
 func (app *application) getDashboard(w http.ResponseWriter, r *http.Request) {
-	dashboard.Show().Render(context.Background(), w)
+	accounts, err := app.accountService.GetAll()
+	if err != nil {
+		log.Print("could not retrieve accounts: ", err)
+		http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
+		return
+	}
+	dashboard.Show(accounts).Render(context.Background(), w)
 }
 
 func (app *application) getLogin(w http.ResponseWriter, r *http.Request) {
@@ -67,7 +75,8 @@ func main() {
 	defer db.Close()
 
 	app := &application{
-		config: cfg,
+		config:         cfg,
+		accountService: &service.AccountService{DB: db},
 	}
 
 	mux := http.NewServeMux()
