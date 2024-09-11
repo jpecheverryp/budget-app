@@ -46,7 +46,7 @@ func Show(accounts []service.Account) templ.Component {
 				}()
 			}
 			ctx = templ.InitializeContext(ctx)
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div><h2>Dashboard Page</h2><h3>Accounts</h3><ul>")
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div><h2>Dashboard Page</h2><h3>Accounts:</h3><ul>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}

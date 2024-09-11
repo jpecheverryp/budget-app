@@ -5,8 +5,9 @@ import (
 	"database/sql"
 	"flag"
 	"fmt"
-	"log"
+	"log/slog"
 	"net/http"
+	"os"
 
 	"github.com/jpecheverryp/budget-app/service"
 	"github.com/jpecheverryp/budget-app/view/dashboard"
@@ -22,6 +23,7 @@ type config struct {
 }
 
 type application struct {
+	logger         *slog.Logger
 	config         config
 	accountService *service.AccountService
 }
@@ -33,7 +35,7 @@ func (app *application) getIndex(w http.ResponseWriter, r *http.Request) {
 func (app *application) getDashboard(w http.ResponseWriter, r *http.Request) {
 	accounts, err := app.accountService.GetAll()
 	if err != nil {
-		log.Print("could not retrieve accounts: ", err)
+		app.logger.Error(err.Error())
 		http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
 		return
 	}
@@ -68,13 +70,17 @@ func main() {
 	flag.StringVar(&cfg.dsn, "dsn", "", "Database DSN")
 	flag.Parse()
 
+	logger := slog.New(slog.NewTextHandler(os.Stdout, nil))
+
 	db, err := connectToDB(cfg)
 	if err != nil {
-		log.Fatal("cannot connect to database: ", err)
+		logger.Error(err.Error())
+		os.Exit(1)
 	}
 	defer db.Close()
 
 	app := &application{
+		logger:         logger,
 		config:         cfg,
 		accountService: &service.AccountService{DB: db},
 	}
@@ -86,6 +92,10 @@ func main() {
 	mux.HandleFunc("/login", app.getLogin)
 	mux.HandleFunc("/register", app.getRegister)
 
-	log.Print("running server in port :", app.config.port)
-	log.Fatal(http.ListenAndServe(fmt.Sprintf(":%d", app.config.port), mux))
+	logger.Info("starting server", "port", app.config.port)
+	err = http.ListenAndServe(fmt.Sprintf(":%d", app.config.port), mux)
+	if err != nil {
+		logger.Error(err.Error())
+		os.Exit(1)
+	}
 }

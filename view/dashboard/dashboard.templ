@@ -9,7 +9,7 @@ templ Show(accounts []service.Account) {
 	@layout.Base() {
 		<div>
 			<h2>Dashboard Page</h2>
-            <h3>Accounts:</h3>
+			<h3>Accounts:</h3>
 			<ul>
 				for _, account := range accounts {
 					<li>{ account.AccountName }</li>
