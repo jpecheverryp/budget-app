@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"database/sql"
 	"flag"
 	"fmt"
 	"log"
@@ -11,10 +12,12 @@ import (
 	"github.com/jpecheverryp/budget-app/view/home"
 	"github.com/jpecheverryp/budget-app/view/login"
 	"github.com/jpecheverryp/budget-app/view/register"
+	_ "github.com/tursodatabase/libsql-client-go/libsql"
 )
 
 type config struct {
 	port int
+	dsn  string
 }
 
 type application struct {
@@ -37,10 +40,31 @@ func (app *application) getRegister(w http.ResponseWriter, r *http.Request) {
 	register.Show().Render(context.Background(), w)
 }
 
+func connectToDB(cfg config) (*sql.DB, error) {
+	db, err := sql.Open("libsql", cfg.dsn)
+	if err != nil {
+		return nil, err
+	}
+
+	err = db.Ping()
+	if err != nil {
+		return nil, err
+	}
+
+	return db, nil
+}
+
 func main() {
 	var cfg config
 	flag.IntVar(&cfg.port, "port", 8080, "App Network Port")
+	flag.StringVar(&cfg.dsn, "dsn", "", "Database DSN")
 	flag.Parse()
+
+	db, err := connectToDB(cfg)
+	if err != nil {
+		log.Fatal("cannot connect to database: ", err)
+	}
+	defer db.Close()
 
 	app := &application{
 		config: cfg,
