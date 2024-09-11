@@ -57,4 +57,3 @@ func (s AccountService) Create(accountName string) (Account, error) {
 	a.AccountName = accountName
 	return a, nil
 }
-
