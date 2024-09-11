@@ -1,12 +1,14 @@
 package layout
 
+import "github.com/jpecheverryp/budget-app/view/component"
+
 templ Base() {
 	<html>
 		<head>
 			<title>Budget App</title>
 		</head>
 		<body>
-			<h1>Budget App</h1>
+			@component.Nav()
 			{ children... }
 		</body>
 	</html>
