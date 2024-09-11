@@ -10,7 +10,7 @@ templ Sidebar(accounts []service.Account) {
 		</hgroup>
 		<ul>
 			for _, account := range accounts {
-				<li>{ account.AccountName }</li>
+				@AccountItem(account)
 			}
 		</ul>
 	</aside>

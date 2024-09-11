@@ -1,0 +1,11 @@
+package component
+
+import "github.com/jpecheverryp/budget-app/service"
+
+templ AccountItem(account service.Account) {
+	<li>
+		<article>
+			{ account.AccountName }
+		</article>
+	</li>
+}
