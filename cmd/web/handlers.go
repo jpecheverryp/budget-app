@@ -23,7 +23,7 @@ func (app *application) getDashboard(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
 		return
 	}
-	dashboard.ShowNewAccount(accounts).Render(context.Background(), w)
+	dashboard.MainDash(accounts).Render(context.Background(), w)
 }
 
 func (app *application) getLogin(w http.ResponseWriter, r *http.Request) {

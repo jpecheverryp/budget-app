@@ -146,7 +146,7 @@ func Dashboard(accounts []service.Account) templ.Component {
 				}()
 			}
 			ctx = templ.InitializeContext(ctx)
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<header><nav><ul><li><h1>Dashboard</h1></li></ul></nav></header><div><section class=\"flex\">")
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<header><nav><ul><li><a href=\"/dashboard\"><h1>Dashboard</h1></a></li></ul></nav></header><div><section class=\"flex\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}

@@ -13,7 +13,7 @@ import (
 	"github.com/jpecheverryp/budget-app/view/layout"
 )
 
-func ShowNewAccount(accounts []service.Account) templ.Component {
+func MainDash(accounts []service.Account) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 		if templ_7745c5c3_CtxErr := ctx.Err(); templ_7745c5c3_CtxErr != nil {
@@ -46,7 +46,7 @@ func ShowNewAccount(accounts []service.Account) templ.Component {
 				}()
 			}
 			ctx = templ.InitializeContext(ctx)
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<h2>New Account</h2><form hx-post=\"/dashboard/accounts\" hx-push-url=\"false\" hx-target=\"body\"><label for=\"new-account\">Account Name:</label> <input id=\"new-account\" type=\"text\" name=\"new-account\"> <button type=\"submit\">Add</button></form>")
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<h2>Stats</h2><p>Lorem ipsum dolor sit amet, qui minim labore adipisicing minim sint cillum sint consectetur cupidatat.</p>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}

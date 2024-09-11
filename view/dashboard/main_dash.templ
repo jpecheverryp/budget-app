@@ -1,0 +1,13 @@
+package dashboard
+
+import (
+	"github.com/jpecheverryp/budget-app/service"
+	"github.com/jpecheverryp/budget-app/view/layout"
+)
+
+templ MainDash(accounts []service.Account) {
+	@layout.Dashboard(accounts) {
+		<h2>Stats</h2>
+		<p>Lorem ipsum dolor sit amet, qui minim labore adipisicing minim sint cillum sint consectetur cupidatat.</p>
+	}
+}
