@@ -1,11 +1,20 @@
 package component
 
-import "github.com/jpecheverryp/budget-app/service"
+import (
+	"fmt"
+	"github.com/jpecheverryp/budget-app/service"
+)
+
+func getAccount(id int) string {
+	return fmt.Sprintf("account-%d", id)
+}
+
+func getAccountLink(id int) string {
+	return fmt.Sprintf("/dashboard/account/%d", id)
+}
 
 templ AccountItem(account service.Account) {
-	<li>
-		<article>
-			{ account.AccountName }
-		</article>
+	<li id={ getAccount(account.ID) }>
+		<a href={ templ.SafeURL(getAccountLink(account.ID)) }>{ account.AccountName }</a>
 	</li>
 }

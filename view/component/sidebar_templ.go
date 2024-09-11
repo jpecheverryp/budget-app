@@ -31,7 +31,7 @@ func Sidebar(accounts []service.Account) templ.Component {
 			templ_7745c5c3_Var1 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<aside><hgroup><h3>Accounts:</h3><h4><a href=\"/dashboard/new-account\">Add Account</a></h4></hgroup><ul>")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<aside><hgroup><h3>Accounts:</h3></hgroup><ul id=\"accounts-list\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -41,7 +41,7 @@ func Sidebar(accounts []service.Account) templ.Component {
 				return templ_7745c5c3_Err
 			}
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</ul></aside>")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<li><a href=\"/dashboard/new-account\">Add Account</a></li></ul></aside>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

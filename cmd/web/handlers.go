@@ -4,10 +4,9 @@ import (
 	"context"
 	"net/http"
 
-	"github.com/jpecheverryp/budget-app/service"
+	"github.com/jpecheverryp/budget-app/view/component"
 	"github.com/jpecheverryp/budget-app/view/dashboard"
 	"github.com/jpecheverryp/budget-app/view/home"
-	"github.com/jpecheverryp/budget-app/view/layout"
 	"github.com/jpecheverryp/budget-app/view/login"
 	"github.com/jpecheverryp/budget-app/view/register"
 )
@@ -60,5 +59,5 @@ func (app *application) postNewAccount(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	layout.Dashboard([]service.Account{account}).Render(context.Background(), w)
+	component.AccountItem(account).Render(context.Background(), w)
 }
