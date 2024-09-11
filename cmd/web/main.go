@@ -64,10 +64,23 @@ func connectToDB(cfg config) (*sql.DB, error) {
 	return db, nil
 }
 
+func (app *application) routes() *http.ServeMux {
+	mux := http.NewServeMux()
+
+	mux.HandleFunc("/", app.getIndex)
+	mux.HandleFunc("/dashboard", app.getDashboard)
+	mux.HandleFunc("/login", app.getLogin)
+	mux.HandleFunc("/register", app.getRegister)
+
+	return mux
+}
+
 func main() {
 	var cfg config
+
 	flag.IntVar(&cfg.port, "port", 8080, "App Network Port")
 	flag.StringVar(&cfg.dsn, "dsn", "", "Database DSN")
+
 	flag.Parse()
 
 	logger := slog.New(slog.NewTextHandler(os.Stdout, nil))
@@ -85,15 +98,8 @@ func main() {
 		accountService: &service.AccountService{DB: db},
 	}
 
-	mux := http.NewServeMux()
-
-	mux.HandleFunc("/", app.getIndex)
-	mux.HandleFunc("/dashboard", app.getDashboard)
-	mux.HandleFunc("/login", app.getLogin)
-	mux.HandleFunc("/register", app.getRegister)
-
 	logger.Info("starting server", "port", app.config.port)
-	err = http.ListenAndServe(fmt.Sprintf(":%d", app.config.port), mux)
+	err = http.ListenAndServe(fmt.Sprintf(":%d", app.config.port), app.routes())
 	if err != nil {
 		logger.Error(err.Error())
 		os.Exit(1)
