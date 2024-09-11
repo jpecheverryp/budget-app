@@ -5,3 +5,6 @@ dev:
 lint:
 	templ fmt .
 	go fmt ./...
+
+migrate up:
+	migrate -path=./migrations -database=$$BUDGET_DB_DSN up
