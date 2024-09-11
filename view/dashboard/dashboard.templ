@@ -2,6 +2,7 @@ package dashboard
 
 import (
 	"github.com/jpecheverryp/budget-app/service"
+	"github.com/jpecheverryp/budget-app/view/component"
 	"github.com/jpecheverryp/budget-app/view/layout"
 )
 
@@ -9,15 +10,10 @@ templ Show(accounts []service.Account) {
 	@layout.Base() {
 		<div>
 			<h2>Dashboard Page</h2>
-			<hgroup>
-				<h3>Accounts:</h3>
-				<h4><a href="/dashboard/new-account">Add Account</a></h4>
-			</hgroup>
-			<ul>
-				for _, account := range accounts {
-					<li>{ account.AccountName }</li>
-				}
-			</ul>
+			<section class="flex">
+				@component.Sidebar(accounts)
+				<p>DASH HERE</p>
+			</section>
 		</div>
 	}
 }

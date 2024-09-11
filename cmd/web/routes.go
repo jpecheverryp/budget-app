@@ -1,10 +1,15 @@
 package main
 
-import "net/http"
+import (
+	"net/http"
+
+	"github.com/jpecheverryp/budget-app/view"
+)
 
 func (app *application) routes() *http.ServeMux {
 	mux := http.NewServeMux()
 
+	mux.Handle("GET /static/", http.FileServerFS(view.Files))
 	mux.HandleFunc("/", app.getIndex)
 
 	mux.HandleFunc("/dashboard", app.getDashboard)
