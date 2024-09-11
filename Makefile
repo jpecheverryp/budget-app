@@ -1,6 +1,6 @@
 dev:
 	templ generate
-	go run ./cmd/web -port=8080 -dsn=$$BUDGET_DB_DSN
+	go run ./cmd/web -port=$$BUDGET_PORT -dsn=$$BUDGET_DB_DSN
 
 lint:
 	templ fmt .
