@@ -5,7 +5,7 @@ import "github.com/jpecheverryp/budget-app/view/layout"
 templ ShowNewAccount() {
 	@layout.Base() {
 		<h2>New Account</h2>
-		<form hx-post="/dashboard/accounts">
+		<form hx-post="/dashboard/accounts" hx-push-url="false" hx-target="body">
 			<label for="new-account">Account Name:</label>
 			<input id="new-account" type="text" name="new-account"/>
 			<button type="submit">Add</button>
