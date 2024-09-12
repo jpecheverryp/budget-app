@@ -23,6 +23,7 @@ func (app *application) routes() http.Handler {
 	mux.HandleFunc("GET /login", app.getLogin)
 	mux.HandleFunc("GET /register", app.getRegister)
 	mux.HandleFunc("POST /auth/register", app.postRegister)
+	mux.HandleFunc("POST /auth/login", app.postLogin)
 
 	standard := alice.New(app.recoverPanic, app.logRequest, commonHeaders)
 	return standard.Then(mux)

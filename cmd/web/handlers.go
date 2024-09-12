@@ -37,6 +37,18 @@ func (app *application) getLogin(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+func (app *application) postLogin(w http.ResponseWriter, r *http.Request) {
+	err := r.ParseForm()
+	if err != nil {
+		app.clientError(w, http.StatusBadRequest)
+		return
+	}
+	email := r.PostForm.Get("email")
+	unencryptedPassword := r.PostForm.Get("password")
+
+	app.logger.Info("login", "email", email, "pass", unencryptedPassword)
+}
+
 func (app *application) getRegister(w http.ResponseWriter, r *http.Request) {
 	err := app.render(w, r, register.Show())
 	if err != nil {
