@@ -8,10 +8,10 @@ templ Sidebar(accounts []service.Account) {
 			<h3>Accounts:</h3>
 		</hgroup>
 		<ul id="accounts-list">
+			<li><a href="/dashboard/new-account">Add Account</a></li>
 			for _, account := range accounts {
 				@AccountItem(account)
 			}
-			<li><a href="/dashboard/new-account">Add Account</a></li>
 		</ul>
 	</aside>
 }

@@ -1,9 +1,18 @@
 package dashboard
 
-import "github.com/jpecheverryp/budget-app/service"
+import (
+	"github.com/jpecheverryp/budget-app/service"
+	"github.com/jpecheverryp/budget-app/view/layout"
+)
 
 templ ShowAccountInfo(account service.Account) {
 	<h2>{ account.AccountName }</h2>
 	<p>Account Created: { account.CreatedAt.Format("Mon, 02 Jan 2006 15:04:05 MST") }</p>
 	<p>Last Updated: { account.UpdatedAt.Format("Mon, 02 Jan 2006 15:04:05 MST") }</p>
+}
+
+templ ShowAccountInfoFull(accounts []service.Account, account service.Account) {
+	@layout.Dashboard(accounts) {
+		@ShowAccountInfo(account)
+	}
 }

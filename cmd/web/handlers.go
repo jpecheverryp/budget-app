@@ -5,7 +5,6 @@ import (
 	"net/http"
 	"strconv"
 
-	"github.com/jpecheverryp/budget-app/view/component"
 	"github.com/jpecheverryp/budget-app/view/dashboard"
 	"github.com/jpecheverryp/budget-app/view/home"
 	"github.com/jpecheverryp/budget-app/view/login"
@@ -60,7 +59,7 @@ func (app *application) postNewAccount(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	component.AccountItem(account).Render(context.Background(), w)
+	dashboard.ShowAccountInfo(account).Render(context.Background(), w)
 }
 
 func (app *application) getAccountInfo(w http.ResponseWriter, r *http.Request) {
@@ -77,6 +76,18 @@ func (app *application) getAccountInfo(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	dashboard.ShowAccountInfo(account).Render(context.Background(), w)
+	// Check if request was made by HTMX and send partial or full data based on that
+	isHX := r.Header.Get("HX-Request")
+	if isHX == "true" {
+		dashboard.ShowAccountInfo(account).Render(context.Background(), w)
+	} else {
+		accounts, err := app.accountService.GetAll()
+		if err != nil {
+			http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
+			app.logger.Error(err.Error())
+			return
+		}
+		dashboard.ShowAccountInfoFull(accounts, account).Render(context.Background(), w)
+	}
 
 }
