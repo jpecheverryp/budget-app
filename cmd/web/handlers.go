@@ -54,7 +54,13 @@ func (app *application) postRegister(w http.ResponseWriter, r *http.Request) {
 	email := r.PostForm.Get("email")
 	unencryptedPassword := r.PostForm.Get("password")
 
-	app.logger.Info("Register data", "username", username, "email", email, "password", unencryptedPassword)
+	err = app.userService.Insert(username, email, unencryptedPassword)
+	if err != nil {
+		app.serverError(w, r, err)
+		return
+	}
+
+	http.Redirect(w, r, "/login", http.StatusSeeOther)
 }
 
 func (app *application) getNewAccount(w http.ResponseWriter, r *http.Request) {

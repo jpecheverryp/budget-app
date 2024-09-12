@@ -6,7 +6,7 @@ templ Show() {
 	@layout.Main() {
 		<div>
 			<h2>Register Page</h2>
-			<form hx-post="/auth/register">
+			<form hx-post="/auth/register" hx-target="body" hx-swap="innerHTML" hx-push-url="true">
 				<div>
 					<label for="username">Username: </label>
 					<input id="username" name="username" type="text"/>
