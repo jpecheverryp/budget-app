@@ -5,7 +5,10 @@ import (
 	"log/slog"
 	"net/http"
 	"os"
+	"time"
 
+	"github.com/alexedwards/scs/sqlite3store"
+	"github.com/alexedwards/scs/v2"
 	"github.com/jpecheverryp/budget-app/service"
 )
 
@@ -14,6 +17,7 @@ type application struct {
 	config         config
 	accountService *service.AccountService
 	userService    *service.UserService
+	sessionManager *scs.SessionManager
 }
 
 func main() {
@@ -28,11 +32,16 @@ func main() {
 	}
 	defer db.Close()
 
+	sessionManager := scs.New()
+	sessionManager.Store = sqlite3store.New(db)
+	sessionManager.Lifetime = 12 * time.Hour
+
 	app := &application{
 		logger:         logger,
 		config:         cfg,
 		accountService: &service.AccountService{DB: db},
 		userService:    &service.UserService{DB: db},
+		sessionManager: sessionManager,
 	}
 
 	logger.Info("starting server", "port", app.config.port)

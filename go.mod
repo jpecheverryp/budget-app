@@ -4,6 +4,9 @@ go 1.22.0
 
 require (
 	github.com/a-h/templ v0.2.778
+	github.com/alexedwards/scs/sqlite3store v0.0.0-20240316134038-7e11d57e8885
+	github.com/alexedwards/scs/v2 v2.8.0
+	github.com/justinas/alice v1.2.0
 	github.com/tursodatabase/libsql-client-go v0.0.0-20240902231107-85af5b9d094d
 )
 
