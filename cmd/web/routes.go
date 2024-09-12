@@ -20,5 +20,5 @@ func (app *application) routes() http.Handler {
 	mux.HandleFunc("GET /login", app.getLogin)
 	mux.HandleFunc("GET /register", app.getRegister)
 
-	return app.logRequest(commonHeaders(mux))
+	return app.recoverPanic(app.logRequest(commonHeaders(mux)))
 }
