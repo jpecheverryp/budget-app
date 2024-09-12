@@ -13,6 +13,7 @@ type application struct {
 	logger         *slog.Logger
 	config         config
 	accountService *service.AccountService
+	userService    *service.UserService
 }
 
 func main() {
@@ -31,6 +32,7 @@ func main() {
 		logger:         logger,
 		config:         cfg,
 		accountService: &service.AccountService{DB: db},
+		userService:    &service.UserService{DB: db},
 	}
 
 	logger.Info("starting server", "port", app.config.port)
