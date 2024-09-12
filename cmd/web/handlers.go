@@ -44,6 +44,9 @@ func (app *application) getRegister(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+func (app *application) postRegister(w http.ResponseWriter, r *http.Request) {
+}
+
 func (app *application) getNewAccount(w http.ResponseWriter, r *http.Request) {
 	accounts, err := app.accountService.GetAll()
 	if err != nil {
