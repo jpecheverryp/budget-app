@@ -53,6 +53,7 @@ func (app *application) postRegister(w http.ResponseWriter, r *http.Request) {
 	username := r.PostForm.Get("username")
 	email := r.PostForm.Get("email")
 	unencryptedPassword := r.PostForm.Get("password")
+
 	app.logger.Info("Register data", "username", username, "email", email, "password", unencryptedPassword)
 }
 

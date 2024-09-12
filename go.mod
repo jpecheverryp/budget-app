@@ -8,6 +8,7 @@ require (
 	github.com/alexedwards/scs/v2 v2.8.0
 	github.com/justinas/alice v1.2.0
 	github.com/tursodatabase/libsql-client-go v0.0.0-20240902231107-85af5b9d094d
+	golang.org/x/crypto v0.27.0
 )
 
 require (
