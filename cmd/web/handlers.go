@@ -45,6 +45,15 @@ func (app *application) getRegister(w http.ResponseWriter, r *http.Request) {
 }
 
 func (app *application) postRegister(w http.ResponseWriter, r *http.Request) {
+	err := r.ParseForm()
+	if err != nil {
+		app.clientError(w, http.StatusBadRequest)
+		return
+	}
+	username := r.PostForm.Get("username")
+	email := r.PostForm.Get("email")
+	unencryptedPassword := r.PostForm.Get("password")
+	app.logger.Info("Register data", "username", username, "email", email, "password", unencryptedPassword)
 }
 
 func (app *application) getNewAccount(w http.ResponseWriter, r *http.Request) {
