@@ -71,7 +71,13 @@ func (app *application) postNewAccount(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	err = app.render(w, r, dashboard.ShowAccountInfo(account))
+	accounts, err := app.accountService.GetAll()
+	if err != nil {
+		app.serverError(w, r, err)
+		return
+	}
+
+	err = app.render(w, r, dashboard.ShowAccountInfoFull(accounts, account))
 	if err != nil {
 		app.serverError(w, r, err)
 	}
