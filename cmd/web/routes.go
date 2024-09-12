@@ -6,7 +6,7 @@ import (
 	"github.com/jpecheverryp/budget-app/view"
 )
 
-func (app *application) routes() *http.ServeMux {
+func (app *application) routes() http.Handler {
 	mux := http.NewServeMux()
 
 	mux.Handle("GET /static/", http.FileServerFS(view.Files))
@@ -20,5 +20,5 @@ func (app *application) routes() *http.ServeMux {
 	mux.HandleFunc("GET /login", app.getLogin)
 	mux.HandleFunc("GET /register", app.getRegister)
 
-	return mux
+	return commonHeaders(mux)
 }
