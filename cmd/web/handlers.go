@@ -1,7 +1,6 @@
 package main
 
 import (
-	"context"
 	"net/http"
 	"strconv"
 
@@ -12,7 +11,10 @@ import (
 )
 
 func (app *application) getIndex(w http.ResponseWriter, r *http.Request) {
-	home.Show().Render(context.Background(), w)
+	err := app.render(w, r, home.Show())
+	if err != nil {
+		app.serverError(w, r, err)
+	}
 }
 
 func (app *application) getDashboard(w http.ResponseWriter, r *http.Request) {
@@ -21,15 +23,25 @@ func (app *application) getDashboard(w http.ResponseWriter, r *http.Request) {
 		app.serverError(w, r, err)
 		return
 	}
-	dashboard.MainDash(accounts).Render(context.Background(), w)
+
+	err = app.render(w, r, dashboard.MainDash(accounts))
+	if err != nil {
+		app.serverError(w, r, err)
+	}
 }
 
 func (app *application) getLogin(w http.ResponseWriter, r *http.Request) {
-	login.Show().Render(context.Background(), w)
+	err := app.render(w, r, login.Show())
+	if err != nil {
+		app.serverError(w, r, err)
+	}
 }
 
 func (app *application) getRegister(w http.ResponseWriter, r *http.Request) {
-	register.Show().Render(context.Background(), w)
+	err := app.render(w, r, register.Show())
+	if err != nil {
+		app.serverError(w, r, err)
+	}
 }
 
 func (app *application) getNewAccount(w http.ResponseWriter, r *http.Request) {
@@ -38,7 +50,10 @@ func (app *application) getNewAccount(w http.ResponseWriter, r *http.Request) {
 		app.serverError(w, r, err)
 		return
 	}
-	dashboard.ShowNewAccount(accounts).Render(context.Background(), w)
+	err = app.render(w, r, dashboard.ShowNewAccount(accounts))
+	if err != nil {
+		app.serverError(w, r, err)
+	}
 
 }
 
@@ -56,7 +71,10 @@ func (app *application) postNewAccount(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	dashboard.ShowAccountInfo(account).Render(context.Background(), w)
+	err = app.render(w, r, dashboard.ShowAccountInfo(account))
+	if err != nil {
+		app.serverError(w, r, err)
+	}
 }
 
 func (app *application) getAccountInfo(w http.ResponseWriter, r *http.Request) {
@@ -75,14 +93,16 @@ func (app *application) getAccountInfo(w http.ResponseWriter, r *http.Request) {
 	// Check if request was made by HTMX and send partial or full data based on that
 	isHX := r.Header.Get("HX-Request")
 	if isHX == "true" {
-		dashboard.ShowAccountInfo(account).Render(context.Background(), w)
+		err = app.render(w, r, dashboard.ShowAccountInfo(account))
 	} else {
 		accounts, err := app.accountService.GetAll()
 		if err != nil {
 			app.serverError(w, r, err)
 			return
 		}
-		dashboard.ShowAccountInfoFull(accounts, account).Render(context.Background(), w)
+		err = app.render(w, r, dashboard.ShowAccountInfoFull(accounts, account))
 	}
-
+	if err != nil {
+		app.serverError(w, r, err)
+	}
 }
