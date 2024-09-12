@@ -18,8 +18,7 @@ func (app *application) getIndex(w http.ResponseWriter, r *http.Request) {
 func (app *application) getDashboard(w http.ResponseWriter, r *http.Request) {
 	accounts, err := app.accountService.GetAll()
 	if err != nil {
-		app.logger.Error(err.Error())
-		http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
+		app.serverError(w, r, err)
 		return
 	}
 	dashboard.MainDash(accounts).Render(context.Background(), w)
@@ -36,8 +35,7 @@ func (app *application) getRegister(w http.ResponseWriter, r *http.Request) {
 func (app *application) getNewAccount(w http.ResponseWriter, r *http.Request) {
 	accounts, err := app.accountService.GetAll()
 	if err != nil {
-		app.logger.Error(err.Error())
-		http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
+		app.serverError(w, r, err)
 		return
 	}
 	dashboard.ShowNewAccount(accounts).Render(context.Background(), w)
@@ -47,15 +45,14 @@ func (app *application) getNewAccount(w http.ResponseWriter, r *http.Request) {
 func (app *application) postNewAccount(w http.ResponseWriter, r *http.Request) {
 	err := r.ParseForm()
 	if err != nil {
-		http.Error(w, http.StatusText(http.StatusBadRequest), http.StatusBadRequest)
+		app.clientError(w, http.StatusBadRequest)
 		return
 	}
 	accountName := r.PostForm.Get("new-account")
 
 	account, err := app.accountService.Create(accountName)
 	if err != nil {
-		app.logger.Error(err.Error())
-		http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
+		app.serverError(w, r, err)
 		return
 	}
 
@@ -71,8 +68,7 @@ func (app *application) getAccountInfo(w http.ResponseWriter, r *http.Request) {
 
 	account, err := app.accountService.Read(id)
 	if err != nil {
-		http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
-		app.logger.Error(err.Error())
+		app.serverError(w, r, err)
 		return
 	}
 
@@ -83,8 +79,7 @@ func (app *application) getAccountInfo(w http.ResponseWriter, r *http.Request) {
 	} else {
 		accounts, err := app.accountService.GetAll()
 		if err != nil {
-			http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
-			app.logger.Error(err.Error())
+			app.serverError(w, r, err)
 			return
 		}
 		dashboard.ShowAccountInfoFull(accounts, account).Render(context.Background(), w)
