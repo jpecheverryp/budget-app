@@ -20,5 +20,5 @@ func (app *application) routes() http.Handler {
 	mux.HandleFunc("GET /login", app.getLogin)
 	mux.HandleFunc("GET /register", app.getRegister)
 
-	return commonHeaders(mux)
+	return app.logRequest(commonHeaders(mux))
 }
