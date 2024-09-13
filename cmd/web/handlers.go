@@ -1,9 +1,11 @@
 package main
 
 import (
+	"errors"
 	"net/http"
 	"strconv"
 
+	"github.com/jpecheverryp/budget-app/service"
 	"github.com/jpecheverryp/budget-app/view/dashboard"
 	"github.com/jpecheverryp/budget-app/view/home"
 	"github.com/jpecheverryp/budget-app/view/login"
@@ -46,7 +48,30 @@ func (app *application) postLogin(w http.ResponseWriter, r *http.Request) {
 	email := r.PostForm.Get("email")
 	unencryptedPassword := r.PostForm.Get("password")
 
-	app.logger.Info("login", "email", email, "pass", unencryptedPassword)
+	id, err := app.userService.Authenticate(email, unencryptedPassword)
+	if err != nil {
+		app.logger.Error(err.Error())
+		if errors.Is(err, service.ErrInvalidCredentials) {
+			err = app.render(w, r, login.Show())
+			if err != nil {
+				app.serverError(w, r, err)
+				return
+			}
+		} else {
+			app.serverError(w, r, err)
+		}
+		return
+	}
+
+	err = app.sessionManager.RenewToken(r.Context())
+	if err != nil {
+		app.serverError(w, r, err)
+		return
+	}
+
+	app.sessionManager.Put(r.Context(), "authenticatedUserID", id)
+
+	http.Redirect(w, r, "/dashboard", http.StatusSeeOther)
 }
 
 func (app *application) getRegister(w http.ResponseWriter, r *http.Request) {

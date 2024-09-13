@@ -2,6 +2,7 @@ package service
 
 import (
 	"database/sql"
+	"errors"
 	"time"
 
 	"golang.org/x/crypto/bcrypt"
@@ -38,7 +39,26 @@ func (s UserService) Insert(username, email, password string) error {
 }
 
 func (s UserService) Authenticate(email, password string) (int, error) {
-	return 0, nil
+	var id int
+	var hashedPassword []byte
+
+	stmt := `SELECT rowid, hashed_password FROM users WHERE email = ?`
+
+	err := s.DB.QueryRow(stmt, email).Scan(&id, &hashedPassword)
+	if err != nil {
+		return 0, err
+	}
+
+	err = bcrypt.CompareHashAndPassword(hashedPassword, []byte(password))
+	if err != nil {
+		if errors.Is(err, bcrypt.ErrMismatchedHashAndPassword) {
+			return 0, ErrInvalidCredentials
+		} else {
+			return 0, err
+		}
+	}
+
+	return id, nil
 }
 
 func (s UserService) Exists(id int) (bool, error) {
