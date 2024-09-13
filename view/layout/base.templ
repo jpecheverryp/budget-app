@@ -42,6 +42,7 @@ templ Dashboard(accounts []service.Account, username string) {
 				</ul>
 				<ul>
 					<li>{ username }</li>
+					<li><a hx-post="/auth/logout" hx-target="body" hx-swap="innerHTML" hx-push-url="true">Logout</a></li>
 				</ul>
 			</nav>
 		</header>

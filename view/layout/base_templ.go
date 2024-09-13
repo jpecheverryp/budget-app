@@ -159,7 +159,7 @@ func Dashboard(accounts []service.Account, username string) templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</li></ul></nav></header><div><section class=\"flex\">")
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</li><li><a hx-post=\"/auth/logout\" hx-target=\"body\" hx-swap=\"innerHTML\" hx-push-url=\"true\">Logout</a></li></ul></nav></header><div><section class=\"flex\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
