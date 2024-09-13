@@ -26,7 +26,15 @@ func (app *application) getDashboard(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	err = app.render(w, r, dashboard.MainDash(accounts))
+	ID, ok := app.sessionManager.Get(r.Context(), "authenticatedUserID").(int)
+	if !ok {
+		app.serverError(w, r, errors.New("could not get ID"))
+		return
+	}
+
+	username, err := app.userService.GetUsernameByID(ID)
+
+	err = app.render(w, r, dashboard.MainDash(accounts, username))
 	if err != nil {
 		app.serverError(w, r, err)
 	}
@@ -106,7 +114,16 @@ func (app *application) getNewAccount(w http.ResponseWriter, r *http.Request) {
 		app.serverError(w, r, err)
 		return
 	}
-	err = app.render(w, r, dashboard.ShowNewAccount(accounts))
+
+	ID, ok := app.sessionManager.Get(r.Context(), "authenticatedUserID").(int)
+	if !ok {
+		app.serverError(w, r, errors.New("could not get ID"))
+		return
+	}
+
+	username, err := app.userService.GetUsernameByID(ID)
+
+	err = app.render(w, r, dashboard.ShowNewAccount(accounts, username))
 	if err != nil {
 		app.serverError(w, r, err)
 	}
@@ -133,7 +150,15 @@ func (app *application) postNewAccount(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	err = app.render(w, r, dashboard.ShowAccountInfoFull(accounts, account))
+	ID, ok := app.sessionManager.Get(r.Context(), "authenticatedUserID").(int)
+	if !ok {
+		app.serverError(w, r, errors.New("could not get ID"))
+		return
+	}
+
+	username, err := app.userService.GetUsernameByID(ID)
+
+	err = app.render(w, r, dashboard.ShowAccountInfoFull(accounts, account, username))
 	if err != nil {
 		app.serverError(w, r, err)
 	}
@@ -162,7 +187,14 @@ func (app *application) getAccountInfo(w http.ResponseWriter, r *http.Request) {
 			app.serverError(w, r, err)
 			return
 		}
-		err = app.render(w, r, dashboard.ShowAccountInfoFull(accounts, account))
+		ID, ok := app.sessionManager.Get(r.Context(), "authenticatedUserID").(int)
+		if !ok {
+			app.serverError(w, r, errors.New("could not get ID"))
+			return
+		}
+
+		username, err := app.userService.GetUsernameByID(ID)
+		err = app.render(w, r, dashboard.ShowAccountInfoFull(accounts, account, username))
 	}
 	if err != nil {
 		app.serverError(w, r, err)

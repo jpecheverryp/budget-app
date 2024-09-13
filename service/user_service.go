@@ -61,6 +61,16 @@ func (s UserService) Authenticate(email, password string) (int, error) {
 	return id, nil
 }
 
+func (s UserService) GetUsernameByID(id int) (string, error) {
+	var username string
+	stmt := `SELECT username FROM users WHERE rowid = ?`
+	err := s.DB.QueryRow(stmt, id).Scan(&username)
+	if err != nil {
+		return "", err
+	}
+	return username, nil
+}
+
 func (s UserService) Exists(id int) (bool, error) {
 	return false, nil
 }
