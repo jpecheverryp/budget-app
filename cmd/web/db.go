@@ -6,7 +6,8 @@ import (
 )
 
 func connectToDB(cfg config) (*sql.DB, error) {
-	db, err := sql.Open("libsql", cfg.dsn)
+	dbDsn := cfg.dbUrl + "?authToken=" + cfg.dbAuthToken
+	db, err := sql.Open("libsql", dbDsn)
 	if err != nil {
 		return nil, err
 	}
