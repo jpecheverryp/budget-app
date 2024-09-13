@@ -43,7 +43,7 @@ func Show() templ.Component {
 				}()
 			}
 			ctx = templ.InitializeContext(ctx)
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div><h2>Login Page</h2></div>")
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div><h2>Login Page</h2><form hx-post=\"/auth/login\" hx-target=\"body\" hx-swap=\"innerHTML\" hx-push-url=\"true\"><div><label for=\"email\">Email: </label> <input id=\"email\" name=\"email\" type=\"email\"></div><div><label for=\"password\">Password: </label> <input id=\"password\" name=\"password\" type=\"password\"></div><button type=\"submit\">Login</button></form></div>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}

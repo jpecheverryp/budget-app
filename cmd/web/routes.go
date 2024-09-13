@@ -15,13 +15,18 @@ func (app *application) routes() http.Handler {
 
 	dynamic := alice.New(app.sessionManager.LoadAndSave)
 
-	mux.Handle("GET /dashboard", dynamic.ThenFunc(app.getDashboard))
-	mux.Handle("GET /dashboard/new-account", dynamic.ThenFunc(app.getNewAccount))
-	mux.Handle("POST /dashboard/accounts", dynamic.ThenFunc(app.postNewAccount))
-	mux.Handle("GET /dashboard/accounts/{id}", dynamic.ThenFunc(app.getAccountInfo))
+	mux.Handle("GET /login", dynamic.ThenFunc(app.getLogin))
+	mux.Handle("GET /register", dynamic.ThenFunc(app.getRegister))
+	mux.Handle("POST /auth/register", dynamic.ThenFunc(app.postRegister))
+	mux.Handle("POST /auth/login", dynamic.ThenFunc(app.postLogin))
+	mux.Handle("POST /auth/logout", dynamic.ThenFunc(app.postLogout))
 
-	mux.HandleFunc("GET /login", app.getLogin)
-	mux.HandleFunc("GET /register", app.getRegister)
+	protected := dynamic.Append(app.requireAuthentication)
+
+	mux.Handle("GET /dashboard", protected.ThenFunc(app.getDashboard))
+	mux.Handle("GET /dashboard/new-account", protected.ThenFunc(app.getNewAccount))
+	mux.Handle("POST /dashboard/accounts", protected.ThenFunc(app.postNewAccount))
+	mux.Handle("GET /dashboard/accounts/{id}", protected.ThenFunc(app.getAccountInfo))
 
 	standard := alice.New(app.recoverPanic, app.logRequest, commonHeaders)
 	return standard.Then(mux)

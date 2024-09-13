@@ -33,12 +33,16 @@ templ Main() {
 	}
 }
 
-templ Dashboard(accounts []service.Account) {
+templ Dashboard(accounts []service.Account, username string) {
 	@Base() {
 		<header>
 			<nav>
 				<ul>
 					<li><a href="/dashboard"><h1>Dashboard</h1></a></li>
+				</ul>
+				<ul>
+					<li>{ username }</li>
+					<li><a hx-post="/auth/logout" hx-target="body" hx-swap="innerHTML" hx-push-url="true">Logout</a></li>
 				</ul>
 			</nav>
 		</header>
