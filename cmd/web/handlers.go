@@ -33,6 +33,10 @@ func (app *application) getDashboard(w http.ResponseWriter, r *http.Request) {
 	}
 
 	username, err := app.userService.GetUsernameByID(ID)
+	if err != nil {
+		app.serverError(w, r, err)
+		return
+	}
 
 	err = app.render(w, r, dashboard.MainDash(accounts, username))
 	if err != nil {
@@ -134,6 +138,10 @@ func (app *application) getNewAccount(w http.ResponseWriter, r *http.Request) {
 	}
 
 	username, err := app.userService.GetUsernameByID(ID)
+	if err != nil {
+		app.serverError(w, r, err)
+		return
+	}
 
 	err = app.render(w, r, dashboard.ShowNewAccount(accounts, username))
 	if err != nil {
@@ -169,6 +177,10 @@ func (app *application) postNewAccount(w http.ResponseWriter, r *http.Request) {
 	}
 
 	username, err := app.userService.GetUsernameByID(ID)
+	if err != nil {
+		app.serverError(w, r, err)
+		return
+	}
 
 	err = app.render(w, r, dashboard.ShowAccountInfoFull(accounts, account, username))
 	if err != nil {
@@ -206,7 +218,16 @@ func (app *application) getAccountInfo(w http.ResponseWriter, r *http.Request) {
 		}
 
 		username, err := app.userService.GetUsernameByID(ID)
+		if err != nil {
+			app.serverError(w, r, err)
+			return
+		}
+
 		err = app.render(w, r, dashboard.ShowAccountInfoFull(accounts, account, username))
+		if err != nil {
+			app.serverError(w, r, err)
+			return
+		}
 	}
 	if err != nil {
 		app.serverError(w, r, err)
