@@ -5,8 +5,8 @@ import (
 	"github.com/jpecheverryp/budget-app/view/layout"
 )
 
-templ ShowNewAccount(accounts []service.Account, username string) {
-	@layout.Dashboard(accounts, username) {
+templ ShowNewAccount(sidebar service.SidebarData) {
+	@layout.Dashboard(sidebar) {
 		<h2>New Account</h2>
 		<form hx-post="/dashboard/accounts" hx-push-url="false" hx-target="body" hx-swap="innerHTML">
 			<label for="new-account">Account Name:</label>

@@ -11,8 +11,8 @@ templ ShowAccountInfo(account service.Account) {
 	<p>Last Updated: { account.UpdatedAt.Format("Mon, 02 Jan 2006 15:04:05 MST") }</p>
 }
 
-templ ShowAccountInfoFull(accounts []service.Account, account service.Account, username string) {
-	@layout.Dashboard(accounts, username) {
+templ ShowAccountInfoFull(sidebarData service.SidebarData, account service.Account) {
+	@layout.Dashboard(sidebarData) {
 		@ShowAccountInfo(account)
 	}
 }

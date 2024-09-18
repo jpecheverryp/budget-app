@@ -33,7 +33,7 @@ templ Main() {
 	}
 }
 
-templ Dashboard(accounts []service.Account, username string) {
+templ Dashboard(sidebar service.SidebarData) {
 	@Base() {
 		<header>
 			<nav>
@@ -41,14 +41,14 @@ templ Dashboard(accounts []service.Account, username string) {
 					<li><a href="/dashboard"><h1>Dashboard</h1></a></li>
 				</ul>
 				<ul>
-					<li>{ username }</li>
+					<li>{ sidebar.Username }</li>
 					<li><a hx-post="/auth/logout" hx-target="body" hx-swap="innerHTML" hx-push-url="true">Logout</a></li>
 				</ul>
 			</nav>
 		</header>
 		<div>
 			<section class="flex">
-				@component.Sidebar(accounts)
+				@component.Sidebar(sidebar.Accounts)
 				<main>
 					{ children... }
 				</main>

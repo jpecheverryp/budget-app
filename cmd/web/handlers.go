@@ -20,11 +20,6 @@ func (app *application) getIndex(w http.ResponseWriter, r *http.Request) {
 }
 
 func (app *application) getDashboard(w http.ResponseWriter, r *http.Request) {
-	accounts, err := app.accountService.GetAll()
-	if err != nil {
-		app.serverError(w, r, err)
-		return
-	}
 
 	ID, ok := app.sessionManager.Get(r.Context(), "authenticatedUserID").(int)
 	if !ok {
@@ -32,13 +27,13 @@ func (app *application) getDashboard(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	username, err := app.userService.GetUsernameByID(ID)
+	sidebar, err := app.accountService.GetSidebarDataByUserID(ID)
 	if err != nil {
 		app.serverError(w, r, err)
 		return
 	}
 
-	err = app.render(w, r, dashboard.MainDash(accounts, username))
+	err = app.render(w, r, dashboard.MainDash(sidebar))
 	if err != nil {
 		app.serverError(w, r, err)
 	}
@@ -125,25 +120,15 @@ func (app *application) postLogout(w http.ResponseWriter, r *http.Request) {
 }
 
 func (app *application) getNewAccount(w http.ResponseWriter, r *http.Request) {
-	accounts, err := app.accountService.GetAll()
-	if err != nil {
-		app.serverError(w, r, err)
-		return
-	}
-
 	ID, ok := app.sessionManager.Get(r.Context(), "authenticatedUserID").(int)
 	if !ok {
 		app.serverError(w, r, errors.New("could not get ID"))
 		return
 	}
 
-	username, err := app.userService.GetUsernameByID(ID)
-	if err != nil {
-		app.serverError(w, r, err)
-		return
-	}
+	sidebar, err := app.accountService.GetSidebarDataByUserID(ID)
 
-	err = app.render(w, r, dashboard.ShowNewAccount(accounts, username))
+	err = app.render(w, r, dashboard.ShowNewAccount(sidebar))
 	if err != nil {
 		app.serverError(w, r, err)
 	}
@@ -164,25 +149,15 @@ func (app *application) postNewAccount(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	accounts, err := app.accountService.GetAll()
-	if err != nil {
-		app.serverError(w, r, err)
-		return
-	}
-
 	ID, ok := app.sessionManager.Get(r.Context(), "authenticatedUserID").(int)
 	if !ok {
 		app.serverError(w, r, errors.New("could not get ID"))
 		return
 	}
 
-	username, err := app.userService.GetUsernameByID(ID)
-	if err != nil {
-		app.serverError(w, r, err)
-		return
-	}
+	sidebar, err := app.accountService.GetSidebarDataByUserID(ID)
 
-	err = app.render(w, r, dashboard.ShowAccountInfoFull(accounts, account, username))
+	err = app.render(w, r, dashboard.ShowAccountInfoFull(sidebar, account))
 	if err != nil {
 		app.serverError(w, r, err)
 	}
@@ -206,24 +181,19 @@ func (app *application) getAccountInfo(w http.ResponseWriter, r *http.Request) {
 	if isHX == "true" {
 		err = app.render(w, r, dashboard.ShowAccountInfo(account))
 	} else {
-		accounts, err := app.accountService.GetAll()
-		if err != nil {
-			app.serverError(w, r, err)
-			return
-		}
 		ID, ok := app.sessionManager.Get(r.Context(), "authenticatedUserID").(int)
 		if !ok {
 			app.serverError(w, r, errors.New("could not get ID"))
 			return
 		}
 
-		username, err := app.userService.GetUsernameByID(ID)
+		sidebar, err := app.accountService.GetSidebarDataByUserID(ID)
 		if err != nil {
 			app.serverError(w, r, err)
 			return
 		}
 
-		err = app.render(w, r, dashboard.ShowAccountInfoFull(accounts, account, username))
+		err = app.render(w, r, dashboard.ShowAccountInfoFull(sidebar, account))
 		if err != nil {
 			app.serverError(w, r, err)
 			return

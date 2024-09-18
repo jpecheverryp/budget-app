@@ -16,6 +16,29 @@ type AccountService struct {
 	DB *sql.DB
 }
 
+type SidebarData struct {
+	ID       int
+	Username string
+	Accounts []Account
+}
+
+func (s AccountService) GetSidebarDataByUserID(id int) (SidebarData, error) {
+	var sidebarData SidebarData
+	stmt := `SELECT username FROM users WHERE rowid = ?`
+	err := s.DB.QueryRow(stmt, id).Scan(&sidebarData.Username)
+	if err != nil {
+		return SidebarData{}, err
+	}
+
+	accounts, err := s.GetAll()
+	if err != nil {
+		return SidebarData{}, err
+	}
+	sidebarData.Accounts = accounts
+
+	return sidebarData, nil
+}
+
 func (s AccountService) Read(id int) (Account, error) {
 	var a Account
 	stmt := `SELECT account_name, created_at, updated_at FROM account WHERE rowid = ?`
