@@ -7,9 +7,34 @@ import (
 
 templ ShowAccountInfo(account service.Account) {
 	<h2>{ account.AccountName }</h2>
+	<p>Current Value: { account.CurrentValue.Format() }</p>
 	<p>Account Created: { account.CreatedAt.Format("Mon, 02 Jan 2006 15:04:05 MST") }</p>
 	<p>Last Updated: { account.UpdatedAt.Format("Mon, 02 Jan 2006 15:04:05 MST") }</p>
-	<p>Current Value: { account.CurrentValue.Format() }</p>
+	<h2>Transactions</h2>
+	<table>
+		<thead>
+			<tr>
+				<th>Date</th>
+				<th>Description</th>
+				<th>Category</th>
+				<th>Amount</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td>09/19/24</td>
+				<td>Car Payment</td>
+				<td>Transportation</td>
+				<td>-$250.00</td>
+			</tr>
+			<tr>
+				<td>09/16/24</td>
+				<td>Great Restaurant</td>
+				<td>Food</td>
+				<td>-$50.00</td>
+			</tr>
+		</tbody>
+	</table>
 }
 
 templ ShowAccountInfoFull(sidebarData service.SidebarData, account service.Account) {
