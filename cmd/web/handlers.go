@@ -12,12 +12,12 @@ import (
 	"github.com/jpecheverryp/budget-app/view/register"
 )
 
-type templateData struct {
+type requestData struct {
 	userID int
 }
 
-func (app *application) newTemplateData(r *http.Request) templateData {
-	return templateData{
+func (app *application) newRequestData(r *http.Request) requestData {
+	return requestData{
 		userID: app.sessionManager.GetInt(r.Context(), "authenticatedUserID"),
 	}
 }
@@ -30,7 +30,7 @@ func (app *application) getIndex(w http.ResponseWriter, r *http.Request) {
 }
 
 func (app *application) getDashboard(w http.ResponseWriter, r *http.Request) {
-	data := app.newTemplateData(r)
+	data := app.newRequestData(r)
 
 	sidebar, err := app.accountService.GetSidebarDataByUserID(data.userID)
 	if err != nil {
@@ -125,7 +125,7 @@ func (app *application) postLogout(w http.ResponseWriter, r *http.Request) {
 }
 
 func (app *application) getNewAccount(w http.ResponseWriter, r *http.Request) {
-	data := app.newTemplateData(r)
+	data := app.newRequestData(r)
 
 	sidebar, err := app.accountService.GetSidebarDataByUserID(data.userID)
 	if err != nil {
@@ -148,7 +148,7 @@ func (app *application) postNewAccount(w http.ResponseWriter, r *http.Request) {
 	}
 	accountName := r.PostForm.Get("new-account")
 
-	data := app.newTemplateData(r)
+	data := app.newRequestData(r)
 
 	account, err := app.accountService.Create(accountName, data.userID)
 	if err != nil {
@@ -175,7 +175,7 @@ func (app *application) getAccountInfo(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	data := app.newTemplateData(r)
+	data := app.newRequestData(r)
 
 	account, err := app.accountService.Read(id, data.userID)
 	if err != nil {
