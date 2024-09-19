@@ -127,6 +127,10 @@ func (app *application) getNewAccount(w http.ResponseWriter, r *http.Request) {
 	}
 
 	sidebar, err := app.accountService.GetSidebarDataByUserID(ID)
+	if err != nil {
+		app.serverError(w, r, err)
+		return
+	}
 
 	err = app.render(w, r, dashboard.ShowNewAccount(sidebar))
 	if err != nil {
@@ -156,6 +160,10 @@ func (app *application) postNewAccount(w http.ResponseWriter, r *http.Request) {
 	}
 
 	sidebar, err := app.accountService.GetSidebarDataByUserID(userID)
+	if err != nil {
+		app.serverError(w, r, err)
+		return
+	}
 
 	err = app.render(w, r, dashboard.ShowAccountInfoFull(sidebar, account))
 	if err != nil {
