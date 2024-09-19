@@ -25,12 +25,14 @@ func main() {
 
 	logger := slog.New(slog.NewTextHandler(os.Stdout, nil))
 
+	logger.Info("connecting to the database")
 	db, err := connectToDB(cfg)
 	if err != nil {
 		logger.Error(err.Error())
 		os.Exit(1)
 	}
 	defer db.Close()
+	logger.Info("connected succesfully to the database")
 
 	sessionManager := scs.New()
 	sessionManager.Store = libsqlstore.New(db)

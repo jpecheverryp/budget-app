@@ -143,19 +143,19 @@ func (app *application) postNewAccount(w http.ResponseWriter, r *http.Request) {
 	}
 	accountName := r.PostForm.Get("new-account")
 
-	account, err := app.accountService.Create(accountName)
-	if err != nil {
-		app.serverError(w, r, err)
-		return
-	}
-
-	ID, ok := app.sessionManager.Get(r.Context(), "authenticatedUserID").(int)
+	userID, ok := app.sessionManager.Get(r.Context(), "authenticatedUserID").(int)
 	if !ok {
 		app.serverError(w, r, errors.New("could not get ID"))
 		return
 	}
 
-	sidebar, err := app.accountService.GetSidebarDataByUserID(ID)
+	account, err := app.accountService.Create(accountName, userID)
+	if err != nil {
+		app.serverError(w, r, err)
+		return
+	}
+
+	sidebar, err := app.accountService.GetSidebarDataByUserID(userID)
 
 	err = app.render(w, r, dashboard.ShowAccountInfoFull(sidebar, account))
 	if err != nil {
@@ -170,7 +170,13 @@ func (app *application) getAccountInfo(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	account, err := app.accountService.Read(id)
+	userID, ok := app.sessionManager.Get(r.Context(), "authenticatedUserID").(int)
+	if !ok {
+		app.serverError(w, r, errors.New("could not get ID"))
+		return
+	}
+
+	account, err := app.accountService.Read(id, userID)
 	if err != nil {
 		app.serverError(w, r, err)
 		return
@@ -181,13 +187,8 @@ func (app *application) getAccountInfo(w http.ResponseWriter, r *http.Request) {
 	if isHX == "true" {
 		err = app.render(w, r, dashboard.ShowAccountInfo(account))
 	} else {
-		ID, ok := app.sessionManager.Get(r.Context(), "authenticatedUserID").(int)
-		if !ok {
-			app.serverError(w, r, errors.New("could not get ID"))
-			return
-		}
 
-		sidebar, err := app.accountService.GetSidebarDataByUserID(ID)
+		sidebar, err := app.accountService.GetSidebarDataByUserID(userID)
 		if err != nil {
 			app.serverError(w, r, err)
 			return

@@ -24,13 +24,14 @@ type SidebarData struct {
 
 func (s AccountService) GetSidebarDataByUserID(id int) (SidebarData, error) {
 	var sidebarData SidebarData
-	stmt := `SELECT username FROM users WHERE rowid = ?`
+	sidebarData.ID = id
+	stmt := `SELECT username FROM users WHERE id = ?`
 	err := s.DB.QueryRow(stmt, id).Scan(&sidebarData.Username)
 	if err != nil {
 		return SidebarData{}, err
 	}
 
-	accounts, err := s.GetAll()
+	accounts, err := s.GetAll(sidebarData.ID)
 	if err != nil {
 		return SidebarData{}, err
 	}
@@ -39,10 +40,10 @@ func (s AccountService) GetSidebarDataByUserID(id int) (SidebarData, error) {
 	return sidebarData, nil
 }
 
-func (s AccountService) Read(id int) (Account, error) {
+func (s AccountService) Read(id int, userID int) (Account, error) {
 	var a Account
-	stmt := `SELECT account_name, created_at, updated_at FROM account WHERE rowid = ?`
-	err := s.DB.QueryRow(stmt, id).Scan(&a.AccountName, &a.CreatedAt, &a.UpdatedAt)
+	stmt := `SELECT account_name, created_at, updated_at FROM account WHERE id = ? AND user_id = ?`
+	err := s.DB.QueryRow(stmt, id, userID).Scan(&a.AccountName, &a.CreatedAt, &a.UpdatedAt)
 	if err != nil {
 		return Account{}, nil
 	}
@@ -50,9 +51,9 @@ func (s AccountService) Read(id int) (Account, error) {
 	return a, nil
 }
 
-func (s AccountService) GetAll() ([]Account, error) {
-	stmt := `SELECT rowid, account_name, created_at, updated_at FROM account`
-	rows, err := s.DB.Query(stmt)
+func (s AccountService) GetAll(userID int) ([]Account, error) {
+	stmt := `SELECT id, account_name, created_at, updated_at FROM account WHERE user_id = ?`
+	rows, err := s.DB.Query(stmt, userID)
 	if err != nil {
 		return nil, err
 	}
@@ -81,10 +82,10 @@ func (s AccountService) GetAll() ([]Account, error) {
 	return accounts, nil
 }
 
-func (s AccountService) Create(accountName string) (Account, error) {
+func (s AccountService) Create(accountName string, userID int) (Account, error) {
 	var a Account
-	stmt := `INSERT INTO account (account_name) VALUES (?) RETURNING rowid, created_at, updated_at`
-	err := s.DB.QueryRow(stmt, accountName).Scan(&a.ID, &a.CreatedAt, &a.UpdatedAt)
+	stmt := `INSERT INTO account (account_name, user_id) VALUES (?, ?) RETURNING id, created_at, updated_at`
+	err := s.DB.QueryRow(stmt, accountName, userID).Scan(&a.ID, &a.CreatedAt, &a.UpdatedAt)
 	if err != nil {
 		return Account{}, nil
 	}
