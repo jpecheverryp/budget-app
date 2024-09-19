@@ -15,8 +15,10 @@ import (
 )
 
 func getCurrentValue(value int) string {
-	resultInDollars := float64(value / 100)
-	return fmt.Sprintf("%.2f", resultInDollars)
+	fmt.Println(value)
+	resultInDollars := value / 100
+	fmt.Println(resultInDollars)
+	return fmt.Sprintf("%.2f", float64(resultInDollars))
 }
 
 func ShowAccountInfo(account service.Account) templ.Component {
@@ -47,7 +49,7 @@ func ShowAccountInfo(account service.Account) templ.Component {
 		var templ_7745c5c3_Var2 string
 		templ_7745c5c3_Var2, templ_7745c5c3_Err = templ.JoinStringErrs(account.AccountName)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `view/dashboard/account_info.templ`, Line: 15, Col: 26}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `view/dashboard/account_info.templ`, Line: 17, Col: 26}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var2))
 		if templ_7745c5c3_Err != nil {
@@ -60,7 +62,7 @@ func ShowAccountInfo(account service.Account) templ.Component {
 		var templ_7745c5c3_Var3 string
 		templ_7745c5c3_Var3, templ_7745c5c3_Err = templ.JoinStringErrs(account.CreatedAt.Format("Mon, 02 Jan 2006 15:04:05 MST"))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `view/dashboard/account_info.templ`, Line: 16, Col: 80}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `view/dashboard/account_info.templ`, Line: 18, Col: 80}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var3))
 		if templ_7745c5c3_Err != nil {
@@ -73,7 +75,7 @@ func ShowAccountInfo(account service.Account) templ.Component {
 		var templ_7745c5c3_Var4 string
 		templ_7745c5c3_Var4, templ_7745c5c3_Err = templ.JoinStringErrs(account.UpdatedAt.Format("Mon, 02 Jan 2006 15:04:05 MST"))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `view/dashboard/account_info.templ`, Line: 17, Col: 77}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `view/dashboard/account_info.templ`, Line: 19, Col: 77}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var4))
 		if templ_7745c5c3_Err != nil {
@@ -84,9 +86,9 @@ func ShowAccountInfo(account service.Account) templ.Component {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var5 string
-		templ_7745c5c3_Var5, templ_7745c5c3_Err = templ.JoinStringErrs(getCurrentValue(account.CurrentValue))
+		templ_7745c5c3_Var5, templ_7745c5c3_Err = templ.JoinStringErrs(account.CurrentValue.Format())
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `view/dashboard/account_info.templ`, Line: 18, Col: 58}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `view/dashboard/account_info.templ`, Line: 20, Col: 50}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var5))
 		if templ_7745c5c3_Err != nil {

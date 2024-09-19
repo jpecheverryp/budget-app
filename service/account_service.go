@@ -2,15 +2,24 @@ package service
 
 import (
 	"database/sql"
+	"fmt"
 	"time"
 )
 
 type Account struct {
 	ID           int
 	AccountName  string
-	CurrentValue int
+	CurrentValue currency
 	CreatedAt    time.Time
 	UpdatedAt    time.Time
+}
+
+type currency int
+
+func (c currency) Format() string {
+	decimalCurrency := float64(c) / float64(100)
+
+	return fmt.Sprintf("$%.2f", decimalCurrency)
 }
 
 type AccountService struct {
@@ -92,6 +101,6 @@ func (s AccountService) Create(accountName string, currentValue int, userID int)
 		return Account{}, nil
 	}
 	a.AccountName = accountName
-	a.CurrentValue = currentValue
+	a.CurrentValue = currency(currentValue)
 	return a, nil
 }
