@@ -12,6 +12,16 @@ import (
 	"github.com/jpecheverryp/budget-app/view/register"
 )
 
+type templateData struct {
+	userID int
+}
+
+func (app *application) newTemplateData(r *http.Request) templateData {
+	return templateData{
+		userID: app.sessionManager.GetInt(r.Context(), "authenticatedUserID"),
+	}
+}
+
 func (app *application) getIndex(w http.ResponseWriter, r *http.Request) {
 	err := app.render(w, r, home.Show())
 	if err != nil {
@@ -20,14 +30,9 @@ func (app *application) getIndex(w http.ResponseWriter, r *http.Request) {
 }
 
 func (app *application) getDashboard(w http.ResponseWriter, r *http.Request) {
+	data := app.newTemplateData(r)
 
-	ID, ok := app.sessionManager.Get(r.Context(), "authenticatedUserID").(int)
-	if !ok {
-		app.serverError(w, r, errors.New("could not get ID"))
-		return
-	}
-
-	sidebar, err := app.accountService.GetSidebarDataByUserID(ID)
+	sidebar, err := app.accountService.GetSidebarDataByUserID(data.userID)
 	if err != nil {
 		app.serverError(w, r, err)
 		return
@@ -120,13 +125,9 @@ func (app *application) postLogout(w http.ResponseWriter, r *http.Request) {
 }
 
 func (app *application) getNewAccount(w http.ResponseWriter, r *http.Request) {
-	ID, ok := app.sessionManager.Get(r.Context(), "authenticatedUserID").(int)
-	if !ok {
-		app.serverError(w, r, errors.New("could not get ID"))
-		return
-	}
+	data := app.newTemplateData(r)
 
-	sidebar, err := app.accountService.GetSidebarDataByUserID(ID)
+	sidebar, err := app.accountService.GetSidebarDataByUserID(data.userID)
 	if err != nil {
 		app.serverError(w, r, err)
 		return
@@ -147,19 +148,15 @@ func (app *application) postNewAccount(w http.ResponseWriter, r *http.Request) {
 	}
 	accountName := r.PostForm.Get("new-account")
 
-	userID, ok := app.sessionManager.Get(r.Context(), "authenticatedUserID").(int)
-	if !ok {
-		app.serverError(w, r, errors.New("could not get ID"))
-		return
-	}
+	data := app.newTemplateData(r)
 
-	account, err := app.accountService.Create(accountName, userID)
+	account, err := app.accountService.Create(accountName, data.userID)
 	if err != nil {
 		app.serverError(w, r, err)
 		return
 	}
 
-	sidebar, err := app.accountService.GetSidebarDataByUserID(userID)
+	sidebar, err := app.accountService.GetSidebarDataByUserID(data.userID)
 	if err != nil {
 		app.serverError(w, r, err)
 		return
@@ -178,13 +175,9 @@ func (app *application) getAccountInfo(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	userID, ok := app.sessionManager.Get(r.Context(), "authenticatedUserID").(int)
-	if !ok {
-		app.serverError(w, r, errors.New("could not get ID"))
-		return
-	}
+	data := app.newTemplateData(r)
 
-	account, err := app.accountService.Read(id, userID)
+	account, err := app.accountService.Read(id, data.userID)
 	if err != nil {
 		app.serverError(w, r, err)
 		return
@@ -196,7 +189,7 @@ func (app *application) getAccountInfo(w http.ResponseWriter, r *http.Request) {
 		err = app.render(w, r, dashboard.ShowAccountInfo(account))
 	} else {
 
-		sidebar, err := app.accountService.GetSidebarDataByUserID(userID)
+		sidebar, err := app.accountService.GetSidebarDataByUserID(data.userID)
 		if err != nil {
 			app.serverError(w, r, err)
 			return
