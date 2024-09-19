@@ -7,6 +7,7 @@ CREATE TABLE IF NOT EXISTS account (
     created_at DATETIME NOT NULL DEFAULT current_timestamp,
     updated_at DATETIME NOT NULL DEFAULT current_timestamp,
     user_id INTEGER NOT NULL,
+    current_value INTEGER NOT NULL DEFAULT 0,
     FOREIGN KEY(user_id) REFERENCES users(id)
 );
 
