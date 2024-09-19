@@ -1,14 +1,21 @@
 package dashboard
 
 import (
+	"fmt"
 	"github.com/jpecheverryp/budget-app/service"
 	"github.com/jpecheverryp/budget-app/view/layout"
 )
+
+func getCurrentValue(value int) string {
+	resultInDollars := float64(value / 100)
+	return fmt.Sprintf("%.2f", resultInDollars)
+}
 
 templ ShowAccountInfo(account service.Account) {
 	<h2>{ account.AccountName }</h2>
 	<p>Account Created: { account.CreatedAt.Format("Mon, 02 Jan 2006 15:04:05 MST") }</p>
 	<p>Last Updated: { account.UpdatedAt.Format("Mon, 02 Jan 2006 15:04:05 MST") }</p>
+	<p>Current Value: { getCurrentValue(account.CurrentValue) }</p>
 }
 
 templ ShowAccountInfoFull(sidebarData service.SidebarData, account service.Account) {

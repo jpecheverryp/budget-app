@@ -147,10 +147,15 @@ func (app *application) postNewAccount(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	accountName := r.PostForm.Get("new-account")
+	currentValue, err := strconv.ParseFloat(r.PostForm.Get("current-value"), 64)
+	if err != nil {
+		app.serverError(w, r, err)
+	}
+	currentValueInCents := int(currentValue * 100)
 
 	data := app.newRequestData(r)
 
-	account, err := app.accountService.Create(accountName, data.userID)
+	account, err := app.accountService.Create(accountName, currentValueInCents, data.userID)
 	if err != nil {
 		app.serverError(w, r, err)
 		return

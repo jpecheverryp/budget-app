@@ -46,7 +46,7 @@ func ShowNewAccount(sidebar service.SidebarData) templ.Component {
 				}()
 			}
 			ctx = templ.InitializeContext(ctx)
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<h2>New Account</h2><form hx-post=\"/dashboard/accounts\" hx-push-url=\"false\" hx-target=\"body\" hx-swap=\"innerHTML\"><label for=\"new-account\">Account Name:</label> <input id=\"new-account\" type=\"text\" name=\"new-account\"> <button type=\"submit\">Add</button></form>")
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<h2>New Account</h2><form hx-post=\"/dashboard/accounts\" hx-push-url=\"false\" hx-target=\"body\" hx-swap=\"innerHTML\"><label for=\"new-account\">Account Name:</label> <input id=\"new-account\" type=\"text\" name=\"new-account\"> <label for=\"current-value\">Current Value:</label> <input id=\"current-value\" type=\"number\" name=\"current-value\" step=\".01\"> <button type=\"submit\">Add</button></form>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}

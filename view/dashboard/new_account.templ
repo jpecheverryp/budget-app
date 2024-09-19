@@ -11,6 +11,8 @@ templ ShowNewAccount(sidebar service.SidebarData) {
 		<form hx-post="/dashboard/accounts" hx-push-url="false" hx-target="body" hx-swap="innerHTML">
 			<label for="new-account">Account Name:</label>
 			<input id="new-account" type="text" name="new-account"/>
+			<label for="current-value">Current Value:</label>
+			<input id="current-value" type="number" name="current-value" step=".01"/>
 			<button type="submit">Add</button>
 		</form>
 	}
