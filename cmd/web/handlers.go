@@ -210,3 +210,7 @@ func (app *application) getAccountInfo(w http.ResponseWriter, r *http.Request) {
 		app.serverError(w, r, err)
 	}
 }
+
+func (app *application) getNewTransaction(w http.ResponseWriter, r *http.Request) {
+
+}

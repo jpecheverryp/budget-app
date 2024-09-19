@@ -27,6 +27,7 @@ func (app *application) routes() http.Handler {
 	mux.Handle("GET /dashboard/new-account", protected.ThenFunc(app.getNewAccount))
 	mux.Handle("POST /dashboard/accounts", protected.ThenFunc(app.postNewAccount))
 	mux.Handle("GET /dashboard/accounts/{id}", protected.ThenFunc(app.getAccountInfo))
+	mux.Handle("GET /dashboard/new-transaction", protected.ThenFunc(app.getNewTransaction))
 
 	standard := alice.New(app.recoverPanic, app.logRequest, commonHeaders)
 	return standard.Then(mux)

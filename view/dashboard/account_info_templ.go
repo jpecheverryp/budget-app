@@ -86,7 +86,7 @@ func ShowAccountInfo(account service.Account) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</p><h2>Transactions</h2><table><thead><tr><th>Date</th><th>Description</th><th>Category</th><th>Amount</th></tr></thead> <tbody><tr><td>09/19/24</td><td>Car Payment</td><td>Transportation</td><td>-$250.00</td></tr><tr><td>09/16/24</td><td>Great Restaurant</td><td>Food</td><td>-$50.00</td></tr></tbody></table>")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</p><h2>Transactions</h2><a href=\"/dashboard/new-transaction\">Add Transaction</a><table><thead><tr><th>Date</th><th>Description</th><th>Category</th><th>Amount</th></tr></thead> <tbody><tr><td>09/19/24</td><td>Car Payment</td><td>Transportation</td><td>-$250.00</td></tr><tr><td>09/16/24</td><td>Great Restaurant</td><td>Food</td><td>-$50.00</td></tr></tbody></table>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
