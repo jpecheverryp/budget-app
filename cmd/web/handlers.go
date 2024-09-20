@@ -23,10 +23,7 @@ func (app *application) newRequestData(r *http.Request) requestData {
 }
 
 func (app *application) getIndex(w http.ResponseWriter, r *http.Request) {
-	err := app.render(w, r, home.Show())
-	if err != nil {
-		app.serverError(w, r, err)
-	}
+	app.render(w, r, home.Show())
 }
 
 func (app *application) getDashboard(w http.ResponseWriter, r *http.Request) {
@@ -38,17 +35,11 @@ func (app *application) getDashboard(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	err = app.render(w, r, dashboard.MainDash(sidebar))
-	if err != nil {
-		app.serverError(w, r, err)
-	}
+	app.render(w, r, dashboard.MainDash(sidebar))
 }
 
 func (app *application) getLogin(w http.ResponseWriter, r *http.Request) {
-	err := app.render(w, r, login.Show())
-	if err != nil {
-		app.serverError(w, r, err)
-	}
+	app.render(w, r, login.Show())
 }
 
 func (app *application) postLogin(w http.ResponseWriter, r *http.Request) {
@@ -64,11 +55,7 @@ func (app *application) postLogin(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		app.logger.Error(err.Error())
 		if errors.Is(err, service.ErrInvalidCredentials) {
-			err = app.render(w, r, login.Show())
-			if err != nil {
-				app.serverError(w, r, err)
-				return
-			}
+			app.render(w, r, login.Show())
 		} else {
 			app.serverError(w, r, err)
 		}
@@ -87,10 +74,7 @@ func (app *application) postLogin(w http.ResponseWriter, r *http.Request) {
 }
 
 func (app *application) getRegister(w http.ResponseWriter, r *http.Request) {
-	err := app.render(w, r, register.Show())
-	if err != nil {
-		app.serverError(w, r, err)
-	}
+	app.render(w, r, register.Show())
 }
 
 func (app *application) postRegister(w http.ResponseWriter, r *http.Request) {
@@ -133,10 +117,7 @@ func (app *application) getNewAccount(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	err = app.render(w, r, dashboard.ShowNewAccount(sidebar))
-	if err != nil {
-		app.serverError(w, r, err)
-	}
+	app.render(w, r, dashboard.ShowNewAccount(sidebar))
 }
 
 func (app *application) postNewAccount(w http.ResponseWriter, r *http.Request) {
@@ -166,10 +147,7 @@ func (app *application) postNewAccount(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	err = app.render(w, r, dashboard.ShowAccountInfoFull(sidebar, account))
-	if err != nil {
-		app.serverError(w, r, err)
-	}
+	app.render(w, r, dashboard.ShowAccountInfoFull(sidebar, account))
 }
 
 func (app *application) getAccountInfo(w http.ResponseWriter, r *http.Request) {
@@ -190,7 +168,7 @@ func (app *application) getAccountInfo(w http.ResponseWriter, r *http.Request) {
 	// Check if request was made by HTMX and send partial or full data based on that
 	isHX := r.Header.Get("HX-Request")
 	if isHX == "true" {
-		err = app.render(w, r, dashboard.ShowAccountInfo(account))
+		app.render(w, r, dashboard.ShowAccountInfo(account))
 	} else {
 
 		sidebar, err := app.accountService.GetSidebarDataByUserID(data.userID)
@@ -199,14 +177,7 @@ func (app *application) getAccountInfo(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		err = app.render(w, r, dashboard.ShowAccountInfoFull(sidebar, account))
-		if err != nil {
-			app.serverError(w, r, err)
-			return
-		}
-	}
-	if err != nil {
-		app.serverError(w, r, err)
+		app.render(w, r, dashboard.ShowAccountInfoFull(sidebar, account))
 	}
 }
 
@@ -219,8 +190,5 @@ func (app *application) getNewTransaction(w http.ResponseWriter, r *http.Request
 		return
 	}
 
-	err = app.render(w, r, dashboard.ShowNewTransaction(sidebar))
-	if err != nil {
-		app.serverError(w, r, err)
-	}
+	app.render(w, r, dashboard.ShowNewTransaction(sidebar))
 }

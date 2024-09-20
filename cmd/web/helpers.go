@@ -7,8 +7,11 @@ import (
 	"github.com/a-h/templ"
 )
 
-func (app *application) render(w http.ResponseWriter, r *http.Request, component templ.Component) error {
-	return component.Render(r.Context(), w)
+func (app *application) render(w http.ResponseWriter, r *http.Request, component templ.Component) {
+	err := component.Render(r.Context(), w)
+	if err != nil {
+		app.serverError(w, r, err)
+	}
 }
 
 func (app *application) serverError(w http.ResponseWriter, r *http.Request, err error) {
