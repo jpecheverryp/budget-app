@@ -1,0 +1,12 @@
+package dashboard
+
+import (
+	"github.com/jpecheverryp/budget-app/service"
+	"github.com/jpecheverryp/budget-app/view/layout"
+)
+
+templ ShowNewTransaction(sidebar service.SidebarData) {
+	@layout.Dashboard(sidebar) {
+		<h2>New Transaction</h2>
+	}
+}

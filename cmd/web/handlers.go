@@ -137,7 +137,6 @@ func (app *application) getNewAccount(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		app.serverError(w, r, err)
 	}
-
 }
 
 func (app *application) postNewAccount(w http.ResponseWriter, r *http.Request) {
@@ -212,5 +211,16 @@ func (app *application) getAccountInfo(w http.ResponseWriter, r *http.Request) {
 }
 
 func (app *application) getNewTransaction(w http.ResponseWriter, r *http.Request) {
+	data := app.newRequestData(r)
 
+	sidebar, err := app.accountService.GetSidebarDataByUserID(data.userID)
+	if err != nil {
+		app.serverError(w, r, err)
+		return
+	}
+
+	err = app.render(w, r, dashboard.ShowNewTransaction(sidebar))
+	if err != nil {
+		app.serverError(w, r, err)
+	}
 }
